@@ -1,6 +1,8 @@
 import json
 import traceback
-
+#Jeff3_Lin_RAG_HW1_20250108 +++
+import re
+#Jeff3_Lin_RAG_HW1_20250108 ---
 from model_configurations import get_model_configuration
 
 from langchain_openai import AzureChatOpenAI
@@ -15,8 +17,10 @@ def generate_hw01(question):
     print(f"Question: {question}")
     # 呼叫 demo 函式獲取回應
     response = demo(question)
+    #print(f"Raw Response from Demo: {response.content}")
     #print(f"response.content: {response.content}")
     response_content = response.content
+    #print(f"Original Response Content: {response_content}")
     #print(f"response_content: {response_content}")
     
     # 將 response.content 使用 JSON 格式呈現
@@ -32,9 +36,25 @@ def generate_hw01(question):
     f"輸出內容：{response_content}"
 )
     ans = demo(formatted_question)
-    print(f"Ans: {ans.content}")
+    
+    #print(f"Formatted Response Content: {ans.content}")
     #Jeff3_Lin_RAG_HW1_20250107 ---
-              
+    #Jeff3_Lin_RAG_HW1_20250108 +++
+    
+    # 移除多餘格式
+    clean_result = clean_json(ans.content)
+    #print(f"Cleaned JSON Content: {clean_result}")
+    
+    json_object = json.loads(clean_result)
+    #json_output = json.dumps(json_object, ensure_ascii=False)
+    #print(f"Debug: Final JSON Output: {json_output}")
+    return json.dumps(json_object, ensure_ascii=False)
+    
+    # 回傳清理後的 JSON
+    #return clean_result
+           
+    #Jeff3_Lin_RAG_HW1_20250108 ---
+    
 def generate_hw02(question):
     pass
     
@@ -62,6 +82,17 @@ def demo(question):
     
     return response
 
+
+#Jeff3_Lin_RAG_HW1_20250108 +++
+def clean_json(json_string):
+    """移除多餘的格式，僅保留純 JSON"""
+    match = re.search(r'```json\s*(\{.*\})\s*```', json_string, re.S)
+    if match:
+        return match.group(1).strip()  # 僅提取 JSON 內容部分
+    return json_string
+#Jeff3_Lin_RAG_HW1_20250108 ---
+
+
 #Jeff3_Lin_RAG_HW1_20250107 +++
-generate_hw01('2024年台灣10月紀念日有哪些(請用JSON格式呈現)?')
+generate_hw01('2024年台灣10月紀念日有哪些?')
 #Jeff3_Lin_RAG_HW1_20250107 ---
