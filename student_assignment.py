@@ -10,8 +10,31 @@ gpt_chat_version = 'gpt-4o'
 gpt_config = get_model_configuration(gpt_chat_version)
 
 def generate_hw01(question):
-    pass
+    #Jeff3_Lin_RAG_HW1_20250107 +++
+    # 建立回應問題的格式
+    print(f"Question: {question}")
+    # 呼叫 demo 函式獲取回應
+    response = demo(question)
+    #print(f"response.content: {response.content}")
+    response_content = response.content
+    #print(f"response_content: {response_content}")
     
+    # 將 response.content 使用 JSON 格式呈現
+    formatted_question = (
+    f"請將以下內容重新整理，並依照以下格式輸出為 JSON：\n"
+    f"格式：\n"
+    f'{{\n'
+    f'    "Result": {{\n'
+    f'        "date": "YYYY-MM-DD",\n'
+    f'        "name": "事件名稱"\n'
+    f'    }}\n'
+    f'}}\n'
+    f"輸出內容：{response_content}"
+)
+    ans = demo(formatted_question)
+    print(f"Ans: {ans.content}")
+    #Jeff3_Lin_RAG_HW1_20250107 ---
+              
 def generate_hw02(question):
     pass
     
@@ -38,3 +61,7 @@ def demo(question):
     response = llm.invoke([message])
     
     return response
+
+#Jeff3_Lin_RAG_HW1_20250107 +++
+generate_hw01('2024年台灣10月紀念日有哪些(請用JSON格式呈現)?')
+#Jeff3_Lin_RAG_HW1_20250107 ---
