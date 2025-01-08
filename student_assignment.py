@@ -46,6 +46,8 @@ def generate_hw01(question):
     #print(f"Cleaned JSON Content: {clean_result}")
     
     json_object = json.loads(clean_result)
+    if isinstance(json_object["Result"], list):
+        json_object["Result"] = json_object["Result"][:1]
     #json_output = json.dumps(json_object, ensure_ascii=False)
     #print(f"Debug: Final JSON Output: {json_output}")
     return json.dumps(json_object, ensure_ascii=False)
