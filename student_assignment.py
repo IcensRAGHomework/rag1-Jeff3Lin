@@ -148,6 +148,7 @@ def generate_hw03(question2, question3):
         "question3_result": response_q3.content
     }
 
+#Jeff3_Lin_RAG_HW4_20250113 +++
 def generate_hw04(question):
     image_path = 'baseball.png'
     data_url = local_image_to_data_url(image_path)
@@ -195,11 +196,15 @@ def generate_hw04(question):
     
     answer = response_json['choices'][0]['message']['content']
     # 打印 answer 內容
-    #print("Answer:", answer)
-    
+    match = re.search(r'\d+', answer)
+    score = int(match.group(0))
+    result = {"Result": {"score": score}}
     
     # 打印結果
-    print(json.dumps({"Result": {"score": answer}}, ensure_ascii=False))
+    #print(json.dumps(result, ensure_ascii=False))
+    #print(json.dumps(result, ensure_ascii=False, indent=4))
+    return json.dumps({"Result": {"score": score}}, ensure_ascii=False)
+#Jeff3_Lin_RAG_HW4_20250113 +++
     
 #Jeff3_Lin_RAG_HW3_20250109 +++
 """
@@ -305,8 +310,6 @@ def local_image_to_data_url(image_path):
     # Construct the data URL
     return f"data:{mime_type};base64,{base64_encoded_data}"
 #Jeff3_Lin_RAG_HW4_20250113 ---
-
-
 
 #Jeff3_Lin_RAG_HW1_20250107 +++
 generate_hw01('2024年台灣10月紀念日有哪些?')
